@@ -1,0 +1,2 @@
+# scummer
+Python dict validator.
