@@ -1,4 +1,5 @@
 from .languages import en
+from .errors import *
 
 class Validator:
     schema = None
@@ -10,6 +11,13 @@ class Validator:
 
     def validate(self,data):
         return self._check_schema(schema=self.schema,data=data)
+
+    def is_validate(self,data):
+        try:
+            self.validate(data)
+            return True
+        except ValidationError:
+            return False
 
     def _check_schema(self,schema,data):
         if schema is None:
@@ -35,9 +43,9 @@ class Validator:
                 # TODO raise error
                 pass
         if isinstance(definition['type'], str):  # TypeStr
+            # TODO
             pass
         if isinstance(definition['type'], dict):  # Schema
-            self._check_definition(definition={'type': definition['type']})
             self._check_schema(schema=definition['type'], data=data[key])
         if isinstance(definition['type'], Validator):  # Validator
             definition['type'].validate(data[key])
