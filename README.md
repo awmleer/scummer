@@ -5,17 +5,24 @@ Python dict validator.
 
 ```
 {
-  "key1": <TypeStr> | <Validator> | <Schema> | (<Definition>),
+  "key1": <Meta> | (<Meta>, <Definition>),
   "key2": ...
   ...
 }
+```
+
+### Meta
+
+A meta is an instance of one of these classes:
+
+```
+<TypeStr> | <Validator> | <Schema>
 ```
 
 ### Definition
 
 ```
 {
-  "type": <TypeStr> | <Validator> | <Schema>,
   "required"?: <boolean>,
   "allow_none"?: <boolean>,
   "verbose_name"?: <string>,
