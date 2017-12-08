@@ -22,8 +22,8 @@ class Validator:
     def _check_schema(self,schema,data):
         if schema is None:
             return
-        for key in self.schema:
-            item = self.schema[key]
+        for key in schema:
+            item = schema[key]
             if isinstance(item,tuple): # Definition
                 self._check_definition(meta=item[0], definition=item[1], data=data, key=key)
             else:
@@ -32,8 +32,12 @@ class Validator:
     def _check_definition(self,data, key, meta, definition={}):
         required = definition['required'] if 'required' in definition else self.default_required
         allow_none = definition['allow_none'] if 'allow_none' in definition else self.default_allow_none
-        print(definition)
         key_name = definition['verbose_name'] if 'verbose_name' in definition else key
+        print(data)
+        print(key)
+        print(meta)
+        print(definition)
+        print('-----')
         if not key in data:
             if required:
                 raise ValidationMissingRequiredKeyError(language=self.language, key_name=key_name)

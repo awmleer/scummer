@@ -3,12 +3,17 @@ if __name__ == '__main__':
 
     t = {
         'a': 'xxx',
-        'b': 123
+        'b': {
+            'b1': 123
+        }
     }
 
     v = Validator(schema={
         'a': 'str',
-        'b': 'any',
+        'b': {
+            'b1': 'any',
+            'b2': 'int'
+        },
         'c': ('any',{
             'verbose_name': 'CCC',
             'required': False
