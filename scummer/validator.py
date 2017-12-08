@@ -25,11 +25,11 @@ class Validator:
         for key in self.schema:
             item = self.schema[key]
             if isinstance(item,tuple): # Definition
-                self._check_definition(type_name=item[0], definition=item[1], data=data, key=key)
+                self._check_definition(meta=item[0], definition=item[1], data=data, key=key)
             else:
-                self._check_definition(type_name=item, data=data, key=key)
+                self._check_definition(meta=item, data=data, key=key)
 
-    def _check_definition(self,data, key, type_name, definition={}):
+    def _check_definition(self,data, key, meta, definition={}):
         required = definition['required'] if 'required' in definition else self.default_required
         allow_none = definition['allow_none'] if 'allow_none' in definition else self.default_allow_none
         print(definition)
@@ -44,13 +44,13 @@ class Validator:
                 return
             else:
                 raise ValidationNoneValueError(language=self.language, key_name=key_name)
-        if isinstance(type_name, str):  # TypeStr
+        if isinstance(meta, str):  # TypeStr
             # TODO
             pass
-        if isinstance(type_name, dict):  # Schema
-            self._check_schema(schema=type_name, data=data[key])
-        if isinstance(type_name, Validator):  # Validator
-            type_name.validate(data[key])
+        if isinstance(meta, dict):  # Schema
+            self._check_schema(schema=meta, data=data[key])
+        if isinstance(meta, Validator):  # Validator
+            meta.validate(data[key])
 
 
     def _is_any(self):
