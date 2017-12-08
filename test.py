@@ -15,9 +15,7 @@ if __name__ == '__main__':
             'b1': ['str','int'],
             'b2': ('int',{'required':False})
         },
-        'c': ('array',{
-            'basic_type': 'str'
-        })
+        'c': 'int[]'
     })
 
     v.validate(t)

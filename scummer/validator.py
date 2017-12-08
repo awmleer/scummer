@@ -50,11 +50,11 @@ class Validator:
         required = definition['required'] if 'required' in definition else self.default_required
         allow_none = definition['allow_none'] if 'allow_none' in definition else self.default_allow_none
         key_name = definition['verbose_name'] if 'verbose_name' in definition else key
-        print(data)
-        print(key)
-        print(meta)
-        print(definition)
-        print('-----')
+        # print(data)
+        # print(key)
+        # print(meta)
+        # print(definition)
+        # print('-----')
         if not key in data:
             if required:
                 raise ValidationMissingRequiredKeyError(language=self.language, key_name=key_name)
@@ -69,6 +69,8 @@ class Validator:
             if meta == 'array':
                 basic_type = definition['basic_type'] if 'basic_type' in definition else 'any'
                 self._check_array(value=data[key], key_name=key_name, basic_type=basic_type)
+            elif meta.endswith('[]'):
+                self._check_array(value=data[key], key_name=key_name, basic_type=meta.replace('[]',''))
             else:
                 self._check_type(type_str=meta, value=data[key], key_name=key_name)
         if isinstance(meta, dict):  # Schema
