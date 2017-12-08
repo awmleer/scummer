@@ -9,7 +9,16 @@ class ValidationError(Exception):
 class ValidationKeyError(ValidationError):
     key_name = None
     def __init__(self, key_name, message):
+        self.key_name=key_name
         super(ValidationKeyError, self).__init__(message=message)
+
+
+class ValidationNoTypeMatchError(ValidationKeyError):
+    def __init__(self, language, key_name):
+        super(ValidationNoTypeMatchError, self).__init__(
+            key_name=key_name,
+            message=language['no_type_match'].replace("$KEY$", key_name)
+        )
 
 
 class ValidationMissingRequiredKeyError(ValidationKeyError):

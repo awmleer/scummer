@@ -1,6 +1,8 @@
 # scummer
 Python dict validator.
 
+## Basic Formats
+
 ### Schema
 
 ```
@@ -27,7 +29,7 @@ A meta is an instance of one of these classes:
   "allow_none"?: <boolean>,
   "verbose_name"?: <string>,
   ...
-  (some type specific fields)
+  (some type specific params)
   ...
 }
 ```
@@ -39,4 +41,6 @@ A `TypeStr` can be:
 ```
 'any' | 'str' | 'int' | 'float' | 'bool' | 'array'
 ```
+
+## Type Specific Params
 

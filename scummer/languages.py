@@ -5,4 +5,5 @@ en={
     'not_str': 'Value of "$KEY$" must be a string',
     'not_float': 'Value of "$KEY$" must be a float',
     'not_bool': 'Value of "$KEY$" must be a boolean',
+    'no_type_match': 'Type of "$KEY$" is illegal',
 }

@@ -4,14 +4,14 @@ if __name__ == '__main__':
     t = {
         'a': 'xxx',
         'b': {
-            'b1': 123
+            'b1': 123.123
         }
     }
 
     v = Validator(schema={
-        'a': 'str',
+        'a': ['str','int'],
         'b': {
-            'b1': 'str',
+            'b1': ['str','int'],
             'b2': ('int',{'required':False})
         },
         'c': ('any',{

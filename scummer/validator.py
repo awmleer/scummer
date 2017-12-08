@@ -6,6 +6,7 @@ class Validator:
     language = en
     default_required = True
     default_allow_none = True
+
     def __init__(self, schema):
         self.schema = schema
 
@@ -23,11 +24,27 @@ class Validator:
         if schema is None:
             return
         for key in schema:
-            item = schema[key]
-            if isinstance(item,tuple): # Definition
-                self._check_definition(meta=item[0], definition=item[1], data=data, key=key)
-            else:
-                self._check_definition(meta=item, data=data, key=key)
+            self._check_key(data=data, key=key, item=schema[key])
+
+
+    def _check_key(self, data, key, item):
+        if isinstance(item, tuple):  # Definition
+            self._check_definition(meta=item[0], definition=item[1], data=data, key=key)
+        elif isinstance(item, list):
+            flag = True
+            key_name = key
+            for i in item:
+                try:
+                    self._check_key(data=data, key=key, item=i)
+                    flag = False
+                except ValidationKeyError as e:
+                    key_name=e.key_name
+                except ValidationError as e:
+                    pass
+            if flag:
+                raise ValidationNoTypeMatchError(language=self.language, key_name=key_name)
+        else:
+            self._check_definition(meta=item, data=data, key=key)
 
     def _check_definition(self,data, key, meta, definition={}):
         required = definition['required'] if 'required' in definition else self.default_required
@@ -49,11 +66,18 @@ class Validator:
             else:
                 raise ValidationNoneValueError(language=self.language, key_name=key_name)
         if isinstance(meta, str):  # TypeStr
-            self._check_type(type_str=meta, value=data[key], key_name=key_name)
+            if meta == 'array':
+                self._check_array() # TODO
+            else:
+                self._check_type(type_str=meta, value=data[key], key_name=key_name)
         if isinstance(meta, dict):  # Schema
             self._check_schema(schema=meta, data=data[key])
         if isinstance(meta, Validator):  # Validator
             meta.validate(data[key])
+
+    def _check_array(self):
+        # TODO
+        pass
 
     def _check_type(self, type_str, value, key_name):
         if type_str == 'any':
