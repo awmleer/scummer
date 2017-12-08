@@ -5,7 +5,7 @@ Python dict validator.
 
 ```
 {
-  "key1": <Meta> | (<Meta>, <Definition>),
+  "key1": <Meta> | (<Meta>, <Definition>) | [<Meta>,(<Meta>, <Definition>),...] ,
   "key2": ...
   ...
 }
@@ -34,11 +34,9 @@ A meta is an instance of one of these classes:
 
 ### TypeStr
 
-A `TypeStr` is:
+A `TypeStr` can be:
 
 ```
 'any' | 'str' | 'int' | 'float' | 'bool' | 'array'
 ```
-
-
 

@@ -49,13 +49,29 @@ class Validator:
             else:
                 raise ValidationNoneValueError(language=self.language, key_name=key_name)
         if isinstance(meta, str):  # TypeStr
-            # TODO
-            pass
+            self._check_type(type_str=meta, value=data[key], key_name=key_name)
         if isinstance(meta, dict):  # Schema
             self._check_schema(schema=meta, data=data[key])
         if isinstance(meta, Validator):  # Validator
             meta.validate(data[key])
 
+    def _check_type(self, type_str, value, key_name):
+        if type_str == 'any':
+            return
+        elif type_str == 'int':
+            if type(value) != int:
+                raise ValidationNotIntError(language=self.language, key_name=key_name)
+        elif type_str == 'str':
+            if type(value) != str:
+                raise ValidationNotStrError(language=self.language, key_name=key_name)
+        elif type_str == 'float':
+            if type(value) != float:
+                raise ValidationNotFloatError(language=self.language, key_name=key_name)
+        elif type_str == 'bool':
+            if type(value) != bool:
+                raise ValidationNotBoolError(language=self.language, key_name=key_name)
+        else:
+            raise SchemaError(message='Type '+type_str+'is invalid')
 
     def _is_any(self):
         pass
