@@ -25,30 +25,32 @@ class Validator:
         for key in self.schema:
             item = self.schema[key]
             if isinstance(item,tuple): # Definition
-                self._check_definition(definition=item[0],data=data,key=key)
+                self._check_definition(type_name=item[0], definition=item[1], data=data, key=key)
             else:
-                self._check_definition(definition={'type': item}, data=data, key=key)
+                self._check_definition(type_name=item, data=data, key=key)
 
-    def _check_definition(self,definition,data,key):
+    def _check_definition(self,data, key, type_name, definition={}):
         required = definition['required'] if 'required' in definition else self.default_required
         allow_none = definition['allow_none'] if 'allow_none' in definition else self.default_allow_none
-        if required:
-            if not key in data:
-                raise ValidationMissingRequiredKeyError(language=self.language, key=definition['verbose_name'] if 'verbose_name' in definition else key)
-                pass
+        print(definition)
+        key_name = definition['verbose_name'] if 'verbose_name' in definition else key
+        if not key in data:
+            if required:
+                raise ValidationMissingRequiredKeyError(language=self.language, key_name=key_name)
+            else:
+                return
         if data[key] is None:
             if allow_none:
                 return
             else:
-                raise ValidationNoneValueError(language=self.language, key=definition['verbose_name'] if 'verbose_name' in definition else key)
-                pass
-        if isinstance(definition['type'], str):  # TypeStr
+                raise ValidationNoneValueError(language=self.language, key_name=key_name)
+        if isinstance(type_name, str):  # TypeStr
             # TODO
             pass
-        if isinstance(definition['type'], dict):  # Schema
-            self._check_schema(schema=definition['type'], data=data[key])
-        if isinstance(definition['type'], Validator):  # Validator
-            definition['type'].validate(data[key])
+        if isinstance(type_name, dict):  # Schema
+            self._check_schema(schema=type_name, data=data[key])
+        if isinstance(type_name, Validator):  # Validator
+            type_name.validate(data[key])
 
 
     def _is_any(self):
