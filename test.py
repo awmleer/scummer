@@ -11,8 +11,8 @@ if __name__ == '__main__':
     v = Validator(schema={
         'a': 'str',
         'b': {
-            'b1': 'any',
-            'b2': 'int'
+            'b1': 'str',
+            'b2': ('int',{'required':False})
         },
         'c': ('any',{
             'verbose_name': 'CCC',

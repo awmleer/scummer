@@ -73,6 +73,3 @@ class Validator:
         else:
             raise SchemaError(message='Type '+type_str+'is invalid')
 
-    def _is_any(self):
-        pass
-
