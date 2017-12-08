@@ -34,13 +34,13 @@ class Validator:
         allow_none = definition['allow_none'] if 'allow_none' in definition else self.default_allow_none
         if required:
             if not key in data:
-                # TODO raise error
+                raise ValidationMissingRequiredKeyError(language=self.language, key=definition['verbose_name'] if 'verbose_name' in definition else key)
                 pass
         if data[key] is None:
             if allow_none:
                 return
             else:
-                # TODO raise error
+                raise ValidationNoneValueError(language=self.language, key=definition['verbose_name'] if 'verbose_name' in definition else key)
                 pass
         if isinstance(definition['type'], str):  # TypeStr
             # TODO
