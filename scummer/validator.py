@@ -39,7 +39,7 @@ class Validator:
                     flag = False
                 except ValidationKeyError as e:
                     key_name=e.key_name
-                except ValidationError as e:
+                except ValidationError:
                     pass
             if flag:
                 raise ValidationNoTypeMatchError(language=self.language, key_name=key_name)
@@ -67,7 +67,8 @@ class Validator:
                 raise ValidationNoneValueError(language=self.language, key_name=key_name)
         if isinstance(meta, str):  # TypeStr
             if meta == 'array':
-                self._check_array() # TODO
+                basic_type = definition['basic_type'] if 'basic_type' in definition else 'any'
+                self._check_array(value=data[key], key_name=key_name, basic_type=basic_type)
             else:
                 self._check_type(type_str=meta, value=data[key], key_name=key_name)
         if isinstance(meta, dict):  # Schema
@@ -75,9 +76,17 @@ class Validator:
         if isinstance(meta, Validator):  # Validator
             meta.validate(data[key])
 
-    def _check_array(self):
-        # TODO
-        pass
+    def _check_array(self, value, key_name, basic_type='any'):
+        if not isinstance(value, list):
+            raise ValidationNotArrayError(language=self.language, key_name=key_name)
+        for v in value:
+            try:
+                self._check_type(type_str=basic_type, value=v, key_name=key_name)
+            except ValidationKeyError:
+                raise ValidationKeyError(
+                    key_name=key_name,
+                    message=self.language['key_general_error'].replace("$KEY$",key_name)
+                )
 
     def _check_type(self, type_str, value, key_name):
         if type_str == 'any':

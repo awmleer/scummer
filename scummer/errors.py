@@ -69,6 +69,15 @@ class ValidationNotBoolError(ValidationKeyError):
         )
 
 
+class ValidationNotArrayError(ValidationKeyError):
+    def __init__(self, language, key_name):
+        super(ValidationNotArrayError, self).__init__(
+            key_name=key_name,
+            message=language['not_array'].replace("$KEY$", key_name)
+        )
+
+
+
 
 class SchemaError(Exception):
     message = ''

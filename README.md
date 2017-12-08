@@ -29,18 +29,36 @@ A meta is an instance of one of these classes:
   "allow_none"?: <boolean>,
   "verbose_name"?: <string>,
   ...
-  (some type specific params)
+  (some meta specific params)
   ...
 }
 ```
 
 ### TypeStr
 
-A `TypeStr` can be:
+A `TypeStr` can be a **basic type string**:
 
 ```
-'any' | 'str' | 'int' | 'float' | 'bool' | 'array'
+'any' | 'str' | 'int' | 'float' | 'bool'
 ```
 
-## Type Specific Params
+or:
+
+```
+'array'
+```
+
+or a **basic type string** with a `[]`, such as:
+
+```
+'any[]' | 'str[]' | 'int[]'
+```
+
+## Meta Specific Params
+
+### array
+
+```
+"basic_type": a basic type string
+```
 

@@ -4,8 +4,9 @@ if __name__ == '__main__':
     t = {
         'a': 'xxx',
         'b': {
-            'b1': 123.123
-        }
+            'b1': 123
+        },
+        'c': [1,2]
     }
 
     v = Validator(schema={
@@ -14,9 +15,8 @@ if __name__ == '__main__':
             'b1': ['str','int'],
             'b2': ('int',{'required':False})
         },
-        'c': ('any',{
-            'verbose_name': 'CCC',
-            'required': False
+        'c': ('array',{
+            'basic_type': 'str'
         })
     })
 
