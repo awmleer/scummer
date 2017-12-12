@@ -7,7 +7,7 @@ class Validator:
     default_required = True
     default_allow_none = True
 
-    def __init__(self, schema):
+    def __init__(self, schema=None):
         self.schema = schema
 
     def validate(self,data):
