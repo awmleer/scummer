@@ -61,6 +61,14 @@ class ValidationNotFloatError(ValidationKeyError):
         )
 
 
+class ValidationNotNumberError(ValidationKeyError):
+    def __init__(self, language, key_name):
+        super(ValidationNotNumberError, self).__init__(
+            key_name=key_name,
+            message=language['not_number'].replace("$KEY$", key_name)
+        )
+
+
 class ValidationNotBoolError(ValidationKeyError):
     def __init__(self, language, key_name):
         super(ValidationNotBoolError, self).__init__(

@@ -109,6 +109,9 @@ class Validator:
         elif type_str == 'bool':
             if type(value) != bool:
                 raise ValidationNotBoolError(language=self.language, key_name=key_name)
+        elif type_str == 'number':
+            if type(value) != int and type(value) != float:
+                raise ValidationNotNumberError(language=self.language, key_name=key_name)
         else:
             raise SchemaError(message='Type '+type_str+'is invalid')
 
