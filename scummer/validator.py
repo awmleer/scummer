@@ -70,27 +70,29 @@ class Validator:
                 basic_type = definition['basic_type'] if 'basic_type' in definition else 'any'
                 self._check_array(value=data[key], key_name=key_name, basic_type=basic_type)
             elif meta.endswith('[]'):
-                self._check_array(value=data[key], key_name=key_name, basic_type=meta.replace('[]',''))
+                self._check_array(value=data[key], key_name=key_name, basic_type=meta.replace('[]',''), definition=definition)
             else:
-                self._check_type(type_str=meta, value=data[key], key_name=key_name)
+                self._check_type(type_str=meta, value=data[key], key_name=key_name, definition=definition)
         if isinstance(meta, dict):  # Schema
             self._check_schema(schema=meta, data=data[key])
         if isinstance(meta, Validator):  # Validator
             meta.validate(data[key])
 
-    def _check_array(self, value, key_name, basic_type='any'):
+    def _check_array(self, value, key_name, basic_type='any', definition={}):
         if not isinstance(value, list):
             raise ValidationNotArrayError(language=self.language, key_name=key_name)
+        if 'max_length' in definition and len(value) > definition['max_length']:
+            raise ValidationMaxLengthError(language=self.language, key_name=key_name, length=definition['max_length'])
         for v in value:
             try:
                 self._check_type(type_str=basic_type, value=v, key_name=key_name)
             except ValidationKeyError:
                 raise ValidationKeyError(
                     key_name=key_name,
-                    message=self.language['key_general_error'].replace("$KEY$",key_name)
+                    message=self.language['key_general_error'].replace("$KEY$", key_name)
                 )
 
-    def _check_type(self, type_str, value, key_name):
+    def _check_type(self, type_str, value, key_name, definition={}):
         if type_str == 'any':
             return
         elif type_str == 'int':
@@ -99,6 +101,8 @@ class Validator:
         elif type_str == 'str':
             if type(value) != str:
                 raise ValidationNotStrError(language=self.language, key_name=key_name)
+            if 'max_length' in definition and len(value)>definition['max_length']:
+                raise ValidationMaxLengthError(language=self.language, key_name=key_name, length=definition['max_length'])
         elif type_str == 'float':
             if type(value) != float:
                 raise ValidationNotFloatError(language=self.language, key_name=key_name)

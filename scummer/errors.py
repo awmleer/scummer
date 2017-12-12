@@ -77,6 +77,12 @@ class ValidationNotArrayError(ValidationKeyError):
         )
 
 
+class ValidationMaxLengthError(ValidationKeyError):
+    def __init__(self, language, key_name, length):
+        super(ValidationMaxLengthError, self).__init__(
+            key_name=key_name,
+            message=language['max_length'].replace("$KEY$", key_name).replace("$LENGTH$", str(length))
+        )
 
 
 class SchemaError(Exception):

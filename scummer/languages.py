@@ -8,6 +8,7 @@ en={
     'not_bool': 'Value of "$KEY$" must be a boolean',
     'not_array': 'Value of "$KEY$" must be an array',
     'no_type_match': 'Type of "$KEY$" is illegal',
+    'max_length': 'Max length of "$KEY$" is $LENGTH$',
 }
 
 zh={
@@ -20,4 +21,5 @@ zh={
     'not_bool': '"$KEY$"必须是一个布尔值',
     'not_array': '"$KEY$"必须是一个数组',
     'no_type_match': '"$KEY$"类型错误',
+    'max_length': '"$KEY$"的最大长度为$LENGTH$',
 }
