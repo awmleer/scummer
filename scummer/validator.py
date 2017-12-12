@@ -13,7 +13,7 @@ class Validator:
     def validate(self,data):
         return self._check_schema(schema=self.schema,data=data)
 
-    def is_validate(self,data):
+    def is_valid(self,data):
         try:
             self.validate(data)
             return True
