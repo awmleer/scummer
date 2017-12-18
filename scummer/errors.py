@@ -101,6 +101,23 @@ class ValidationMaxLengthError(ValidationKeyError):
         )
 
 
+class ValidationMaxLimitError(ValidationKeyError):
+    def __init__(self, language, key_name, max):
+        super(ValidationMaxLimitError, self).__init__(
+            key_name=key_name,
+            message=language['max_limit'].replace("$KEY$", key_name).replace("$MAX$", str(max))
+        )
+
+
+class ValidationMinLimitError(ValidationKeyError):
+    def __init__(self, language, key_name, min):
+        super(ValidationMinLimitError, self).__init__(
+            key_name=key_name,
+            message=language['min_limit'].replace("$KEY$", key_name).replace("$MIN$", str(min))
+        )
+
+
+
 class SchemaError(Exception):
     message = ''
     def __init__(self, message):

@@ -113,6 +113,11 @@ class Validator:
                 raise ValidationNotNumberError(language=self.language, key_name=key_name)
         else:
             raise SchemaError(message='Type '+type_str+'is invalid')
+        if type_str == 'int' or type_str=='float':
+            if 'max' in definition and value>definition['max']:
+                raise ValidationMaxLimitError(language=self.language, key_name=key_name, max=definition['max'])
+            if 'min' in definition and value>definition['min']:
+                raise ValidationMinLimitError(language=self.language, key_name=key_name, min=definition['min'])
 
     def _check_enum(self, value, key_name, items):
         if value not in items:

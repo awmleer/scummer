@@ -59,13 +59,26 @@ or a **basic type string** with a `[]`, such as:
 ### array
 
 **basic_type**: a basic type string
+
 **max_length**: an integer
 
 ### str
 
 **basic_type**: a basic type string
+
 **max_length**: an integer
 
+### int
+
+**max**: the upper limit
+
+**min**: the lower limit
+
+### float
+
+**max**: the upper limit (<=)
+
+**min**: the lower limit (>=)
 
 ### enum
 

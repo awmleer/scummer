@@ -10,6 +10,8 @@ en={
     'not_array': 'Value of "$KEY$" must be an array',
     'no_type_match': 'Type of "$KEY$" is illegal',
     'max_length': 'Max length of "$KEY$" is $LENGTH$',
+    'max_limit': '"$KEY$" should be no more than $MAX$',
+    'min_limit': '"$KEY$" should be no less than $MIN$',
 }
 
 zh={
@@ -24,4 +26,6 @@ zh={
     'not_array': '"$KEY$"必须是一个数组',
     'no_type_match': '"$KEY$"类型错误',
     'max_length': '"$KEY$"的最大长度为$LENGTH$',
+    'max_limit': '"$KEY$"最大为$MAX$',
+    'min_limit': '"$KEY$"最小为$MIN$',
 }
