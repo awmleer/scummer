@@ -39,7 +39,7 @@ A meta is an instance of one of these classes:
 A `TypeStr` can be a **basic type string**:
 
 ```
-'any' | 'str' | 'int' | 'float' | 'bool' | 'number'
+'any' | 'str' | 'int' | 'float' | 'bool' | 'number' | 'enum'
 ```
 
 or:
@@ -65,3 +65,8 @@ or a **basic type string** with a `[]`, such as:
 
 **basic_type**: a basic type string
 **max_length**: an integer
+
+
+### enum
+
+**items**: a list contain the possible values, default as []

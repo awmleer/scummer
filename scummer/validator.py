@@ -71,6 +71,8 @@ class Validator:
                 self._check_array(value=data[key], key_name=key_name, basic_type=basic_type)
             elif meta.endswith('[]'):
                 self._check_array(value=data[key], key_name=key_name, basic_type=meta.replace('[]',''), definition=definition)
+            if meta == 'enum':
+                self._check_enum(value=data[key], key_name=key_name, items=definition['items'] if 'item' in definition else [])
             else:
                 self._check_type(type_str=meta, value=data[key], key_name=key_name, definition=definition)
         if isinstance(meta, dict):  # Schema
@@ -87,10 +89,7 @@ class Validator:
             try:
                 self._check_type(type_str=basic_type, value=v, key_name=key_name)
             except ValidationKeyError:
-                raise ValidationKeyError(
-                    key_name=key_name,
-                    message=self.language['key_general_error'].replace("$KEY$", key_name)
-                )
+                raise ValidationKeyGeneralError(language=self.language, key_name=key_name)
 
     def _check_type(self, type_str, value, key_name, definition={}):
         if type_str == 'any':
@@ -115,3 +114,6 @@ class Validator:
         else:
             raise SchemaError(message='Type '+type_str+'is invalid')
 
+    def _check_enum(self, value, key_name, items):
+        if value not in items:
+            raise ValidationKeyGeneralError(language=self.language, key_name=key_name)

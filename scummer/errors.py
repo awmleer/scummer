@@ -13,6 +13,14 @@ class ValidationKeyError(ValidationError):
         super(ValidationKeyError, self).__init__(message=message)
 
 
+class ValidationKeyGeneralError(ValidationKeyError):
+    def __init__(self, language, key_name):
+        super(ValidationKeyGeneralError, self).__init__(
+            key_name=key_name,
+            message=language['key_general_error'].replace("$KEY$", key_name)
+        )
+
+
 class ValidationNoTypeMatchError(ValidationKeyError):
     def __init__(self, language, key_name):
         super(ValidationNoTypeMatchError, self).__init__(
