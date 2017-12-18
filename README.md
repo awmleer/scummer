@@ -70,9 +70,9 @@ or a **basic type string** with a `[]`, such as:
 
 ### int
 
-**max**: the upper limit
+**max**: the upper limit (<=)
 
-**min**: the lower limit
+**min**: the lower limit (>=)
 
 ### float
 
