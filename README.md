@@ -74,7 +74,7 @@ or a **basic type string** with a `[]`, such as:
 
 ### map
 
-**basic_type**: a basic type string
+**definition**: a definition (see above)
 
 ### array
 

@@ -9,7 +9,7 @@ if __name__ == '__main__':
         'c': [1,2],
         'd': {
             'x': 1,
-            'y': 1
+            'y': 'aaaa'
         }
     }
 
@@ -21,7 +21,10 @@ if __name__ == '__main__':
             'b1': ['str','int'],
             'b2': ('int',{'required':False})
         },
-        'c': 'int[]'
+        'c': 'int[]',
+        'd': ('map',{
+            'definition': 'int'
+        })
     })
 
     v.validate(t)
