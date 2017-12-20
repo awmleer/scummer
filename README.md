@@ -56,6 +56,10 @@ or a **basic type string** with a `[]`, such as:
 
 ## Meta Specific Params
 
+### map
+
+**basic_type**: a basic type string
+
 ### array
 
 **basic_type**: a basic type string

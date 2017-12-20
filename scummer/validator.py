@@ -73,12 +73,21 @@ class Validator:
                 self._check_array(value=data[key], key_name=key_name, basic_type=meta.replace('[]',''), definition=definition)
             elif meta == 'enum':
                 self._check_enum(value=data[key], key_name=key_name, items=definition['items'] if 'items' in definition else [])
+            elif meta == 'map':
+                self._check_map(value=data[key], key_name=key_name, basic_type=definition['basic_type'])
             else:
                 self._check_type(type_str=meta, value=data[key], key_name=key_name, definition=definition)
         if isinstance(meta, dict):  # Schema
             self._check_schema(schema=meta, data=data[key])
         if isinstance(meta, Validator):  # Validator
             meta.validate(data[key])
+
+    def _check_map(self, value, key_name, basic_type):
+        for k in value:
+            try:
+                self._check_type(value=value[k], key_name='', type_str=basic_type)
+            except ValidationKeyError:
+                raise ValidationKeyGeneralError(language=self.language, key_name=key_name)
 
     def _check_array(self, value, key_name, basic_type='any', definition={}):
         if not isinstance(value, list):
