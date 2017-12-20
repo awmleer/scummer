@@ -26,7 +26,7 @@ A meta is an instance of one of these classes:
 ```
 {
   "required"?: <boolean>, //default is True
-  "allow_none"?: <boolean>, //default is True
+  "allow_none"?: <boolean>, //default is False
   "verbose_name"?: <string>,
   ...
   (some meta specific params)

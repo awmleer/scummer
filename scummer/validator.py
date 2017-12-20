@@ -5,7 +5,7 @@ class Validator:
     schema = None
     language = en
     default_required = True
-    default_allow_none = True
+    default_allow_none = False
 
     def __init__(self, schema=None):
         self.schema = schema
@@ -71,8 +71,8 @@ class Validator:
                 self._check_array(value=data[key], key_name=key_name, basic_type=basic_type)
             elif meta.endswith('[]'):
                 self._check_array(value=data[key], key_name=key_name, basic_type=meta.replace('[]',''), definition=definition)
-            if meta == 'enum':
-                self._check_enum(value=data[key], key_name=key_name, items=definition['items'] if 'item' in definition else [])
+            elif meta == 'enum':
+                self._check_enum(value=data[key], key_name=key_name, items=definition['items'] if 'items' in definition else [])
             else:
                 self._check_type(type_str=meta, value=data[key], key_name=key_name, definition=definition)
         if isinstance(meta, dict):  # Schema

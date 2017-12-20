@@ -2,7 +2,7 @@ if __name__ == '__main__':
     from scummer.validator import Validator
 
     t = {
-        'a': 'xxx',
+        'a': 'x',
         'b': {
             'b1': 123
         },
@@ -10,7 +10,9 @@ if __name__ == '__main__':
     }
 
     v = Validator(schema={
-        'a': ['str','int'],
+        'a': ('enum',{
+            'items': ['x','y']
+        }),
         'b': {
             'b1': ['str','int'],
             'b2': ('int',{'required':False})
