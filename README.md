@@ -7,10 +7,26 @@ Python dict validator.
 
 ```
 {
-  "key1": <Meta> | (<Meta>, <Definition>) | [<Meta>,(<Meta>, <Definition>),...] ,
-  "key2": ...
+  "key1": <Definition>,
+  "key2": <Definition>,
   ...
 }
+```
+
+### Definition
+
+A definition is one of these three forms:
+
+```
+<Meta>
+```
+
+```
+(<Meta>, <Param>)
+```
+
+```
+[<Meta>,(<Meta>, <Param>),...]
 ```
 
 ### Meta
@@ -21,7 +37,7 @@ A meta is an instance of one of these classes:
 <TypeStr> | <Validator> | <Schema>
 ```
 
-### Definition
+### Param
 
 ```
 {

@@ -28,8 +28,8 @@ class Validator:
 
 
     def _check_key(self, data, key, item):
-        if isinstance(item, tuple):  # Definition
-            self._check_definition(meta=item[0], definition=item[1], data=data, key=key)
+        if isinstance(item, tuple):  # Param
+            self._check_param(meta=item[0], param=item[1], data=data, key=key)
         elif isinstance(item, list):
             flag = True
             key_name = key
@@ -44,16 +44,16 @@ class Validator:
             if flag:
                 raise ValidationNoTypeMatchError(language=self.language, key_name=key_name)
         else:
-            self._check_definition(meta=item, data=data, key=key)
+            self._check_param(meta=item, data=data, key=key)
 
-    def _check_definition(self,data, key, meta, definition={}):
-        required = definition['required'] if 'required' in definition else self.default_required
-        allow_none = definition['allow_none'] if 'allow_none' in definition else self.default_allow_none
-        key_name = definition['verbose_name'] if 'verbose_name' in definition else key
+    def _check_param(self,data, key, meta, param={}):
+        required = param['required'] if 'required' in param else self.default_required
+        allow_none = param['allow_none'] if 'allow_none' in param else self.default_allow_none
+        key_name = param['verbose_name'] if 'verbose_name' in param else key
         # print(data)
         # print(key)
         # print(meta)
-        # print(definition)
+        # print(param)
         # print('-----')
         if not key in data:
             if required:
@@ -67,16 +67,16 @@ class Validator:
                 raise ValidationNoneValueError(language=self.language, key_name=key_name)
         if isinstance(meta, str):  # TypeStr
             if meta == 'array':
-                basic_type = definition['basic_type'] if 'basic_type' in definition else 'any'
+                basic_type = param['basic_type'] if 'basic_type' in param else 'any'
                 self._check_array(value=data[key], key_name=key_name, basic_type=basic_type)
             elif meta.endswith('[]'):
-                self._check_array(value=data[key], key_name=key_name, basic_type=meta.replace('[]',''), definition=definition)
+                self._check_array(value=data[key], key_name=key_name, basic_type=meta.replace('[]',''), param=param)
             elif meta == 'enum':
-                self._check_enum(value=data[key], key_name=key_name, items=definition['items'] if 'items' in definition else [])
+                self._check_enum(value=data[key], key_name=key_name, items=param['items'] if 'items' in param else [])
             elif meta == 'map':
-                self._check_map(value=data[key], key_name=key_name, basic_type=definition['basic_type'])
+                self._check_map(value=data[key], key_name=key_name, basic_type=param['basic_type'])
             else:
-                self._check_type(type_str=meta, value=data[key], key_name=key_name, definition=definition)
+                self._check_type(type_str=meta, value=data[key], key_name=key_name, param=param)
         if isinstance(meta, dict):  # Schema
             self._check_schema(schema=meta, data=data[key])
         if isinstance(meta, Validator):  # Validator
@@ -89,18 +89,18 @@ class Validator:
             except ValidationKeyError:
                 raise ValidationKeyGeneralError(language=self.language, key_name=key_name)
 
-    def _check_array(self, value, key_name, basic_type='any', definition={}):
+    def _check_array(self, value, key_name, basic_type='any', param={}):
         if not isinstance(value, list):
             raise ValidationNotArrayError(language=self.language, key_name=key_name)
-        if 'max_length' in definition and len(value) > definition['max_length']:
-            raise ValidationMaxLengthError(language=self.language, key_name=key_name, length=definition['max_length'])
+        if 'max_length' in param and len(value) > param['max_length']:
+            raise ValidationMaxLengthError(language=self.language, key_name=key_name, length=param['max_length'])
         for v in value:
             try:
                 self._check_type(type_str=basic_type, value=v, key_name=key_name)
             except ValidationKeyError:
                 raise ValidationKeyGeneralError(language=self.language, key_name=key_name)
 
-    def _check_type(self, type_str, value, key_name, definition={}):
+    def _check_type(self, type_str, value, key_name, param={}):
         if type_str == 'any':
             return
         elif type_str == 'int':
@@ -109,8 +109,8 @@ class Validator:
         elif type_str == 'str':
             if type(value) != str:
                 raise ValidationNotStrError(language=self.language, key_name=key_name)
-            if 'max_length' in definition and len(value)>definition['max_length']:
-                raise ValidationMaxLengthError(language=self.language, key_name=key_name, length=definition['max_length'])
+            if 'max_length' in param and len(value)>param['max_length']:
+                raise ValidationMaxLengthError(language=self.language, key_name=key_name, length=param['max_length'])
         elif type_str == 'float':
             if type(value) != float:
                 raise ValidationNotFloatError(language=self.language, key_name=key_name)
@@ -123,10 +123,10 @@ class Validator:
         else:
             raise SchemaError(message='Type '+type_str+'is invalid')
         if type_str == 'int' or type_str=='float':
-            if 'max' in definition and value>definition['max']:
-                raise ValidationMaxLimitError(language=self.language, key_name=key_name, max=definition['max'])
-            if 'min' in definition and value>definition['min']:
-                raise ValidationMinLimitError(language=self.language, key_name=key_name, min=definition['min'])
+            if 'max' in param and value>param['max']:
+                raise ValidationMaxLimitError(language=self.language, key_name=key_name, max=param['max'])
+            if 'min' in param and value>param['min']:
+                raise ValidationMinLimitError(language=self.language, key_name=key_name, min=param['min'])
 
     def _check_enum(self, value, key_name, items):
         if value not in items:
